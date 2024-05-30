@@ -68,6 +68,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
+            cursor: pointer;
         }
         .endpoint:hover {
             transform: scale(1.02);
@@ -99,6 +100,39 @@
             margin: 0.5em 0 0 2.5em;
             font-size: 1.1em;
         }
+        .test-section {
+            display: none;
+            padding: 1em;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 1em;
+        }
+        .test-section label {
+            display: block;
+            margin-top: 0.5em;
+        }
+        .test-section input, .test-section textarea {
+            width: 100%;
+            padding: 0.5em;
+            margin-top: 0.5em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .test-section button {
+            display: block;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.7em 1.5em;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1em;
+            transition: background 0.3s;
+        }
+        .test-section button:hover {
+            background: #0056b3;
+        }
         footer {
             background: #343a40;
             color: #fff;
@@ -108,6 +142,57 @@
         }
         footer p {
             margin: 0;
+        }
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+            header h1 {
+                font-size: 1.5em;
+            }
+            header nav ul li {
+                display: block;
+                margin: 0.5em 0;
+            }
+            header nav ul li a {
+                font-size: 1em;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            .endpoint {
+                padding: 1em;
+            }
+            .endpoint strong {
+                font-size: 1em;
+            }
+            .endpoint p {
+                font-size: 1em;
+                margin-left: 2em;
+            }
+        }
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.2em;
+            }
+            h2 {
+                font-size: 1.2em;
+            }
+            .endpoint {
+                padding: 0.8em;
+            }
+            .endpoint strong {
+                font-size: 0.9em;
+            }
+            .endpoint p {
+                font-size: 0.9em;
+                margin-left: 1.5em;
+            }
+            .method {
+                padding: 0.3em 0.8em;
+                margin-right: 5px;
+            }
         }
     </style>
 </head>
@@ -128,27 +213,27 @@
     <section id="usuarios">
         <div class="container">
             <h2>Endpoints de Usuários</h2>
-            <div class="endpoint">
+            <div class="endpoint" data-endpoint="/api/usuarios" data-method="GET">
                 <span class="method get">GET</span>
                 <strong>/api/usuarios</strong>
                 <p>Retorna a lista de todos os usuários.</p>
             </div>
-            <div class="endpoint">
+            <div class="endpoint" data-endpoint="/api/usuarios/{id}" data-method="GET">
                 <span class="method get">GET</span>
                 <strong>/api/usuarios/{id}</strong>
                 <p>Retorna os dados de um usuário específico pelo ID.</p>
             </div>
-            <div class="endpoint">
+            <div class="endpoint" data-endpoint="/api/usuarios" data-method="POST">
                 <span class="method post">POST</span>
                 <strong>/api/usuarios</strong>
                 <p>Cadastra um novo usuário.</p>
             </div>
-            <div class="endpoint">
+            <div class="endpoint" data-endpoint="/api/usuarios/{id}" data-method="PUT">
                 <span class="method put">PUT</span>
                 <strong>/api/usuarios/{id}</strong>
                 <p>Atualiza os dados de um usuário específico pelo ID.</p>
             </div>
-            <div class="endpoint">
+            <div class="endpoint" data-endpoint="/api/usuarios/{id}" data-method="DELETE">
                 <span class="method delete">DELETE</span>
                 <strong>/api/usuarios/{id}</strong>
                 <p>Deleta um usuário específico pelo ID.</p>
@@ -159,27 +244,27 @@
     <section id="produtos">
         <div class="container">
             <h2>Endpoints de Produtos</h2>
-            <div class="endpoint">
+            <div class="endpoint" data-endpoint="/api/produtos" data-method="GET">
                 <span class="method get">GET</span>
                 <strong>/api/produtos</strong>
                 <p>Retorna a lista de todos os produtos.</p>
             </div>
-            <div class="endpoint">
+            <div class="endpoint" data-endpoint="/api/produtos/{id}" data-method="GET">
                 <span class="method get">GET</span>
                 <strong>/api/produtos/{id}</strong>
                 <p>Retorna os dados de um produto específico pelo ID.</p>
             </div>
-            <div class="endpoint">
+            <div class="endpoint" data-endpoint="/api/produtos" data-method="POST">
                 <span class="method post">POST</span>
                 <strong>/api/produtos</strong>
                 <p>Cadastra um novo produto.</p>
             </div>
-            <div class="endpoint">
+            <div class="endpoint" data-endpoint="/api/produtos/{id}" data-method="PUT">
                 <span class="method put">PUT</span>
                 <strong>/api/produtos/{id}</strong>
                 <p>Atualiza os dados de um produto específico pelo ID.</p>
             </div>
-            <div class="endpoint">
+            <div class="endpoint" data-endpoint="/api/produtos/{id}" data-method="DELETE">
                 <span class="method delete">DELETE</span>
                 <strong>/api/produtos/{id}</strong>
                 <p>Deleta um produto específico pelo ID.</p>
@@ -190,27 +275,27 @@
     <section id="pedidos">
         <div class="container">
             <h2>Endpoints de Pedidos</h2>
-            <div class="endpoint">
+            <div class="endpoint" data-endpoint="/api/pedidos" data-method="GET">
                 <span class="method get">GET</span>
                 <strong>/api/pedidos</strong>
                 <p>Retorna a lista de todos os pedidos.</p>
             </div>
-            <div class="endpoint">
+            <div class="endpoint" data-endpoint="/api/pedidos/{id}" data-method="GET">
                 <span class="method get">GET</span>
                 <strong>/api/pedidos/{id}</strong>
                 <p>Retorna os dados de um pedido específico pelo ID.</p>
             </div>
-            <div class="endpoint">
+            <div class="endpoint" data-endpoint="/api/pedidos" data-method="POST">
                 <span class="method post">POST</span>
                 <strong>/api/pedidos</strong>
                 <p>Cadastra um novo pedido.</p>
             </div>
-            <div class="endpoint">
+            <div class="endpoint" data-endpoint="/api/pedidos/{id}" data-method="PUT">
                 <span class="method put">PUT</span>
                 <strong>/api/pedidos/{id}</strong>
                 <p>Atualiza os dados de um pedido específico pelo ID.</p>
             </div>
-            <div class="endpoint">
+            <div class="endpoint" data-endpoint="/api/pedidos/{id}" data-method="DELETE">
                 <span class="method delete">DELETE</span>
                 <strong>/api/pedidos/{id}</strong>
                 <p>Deleta um pedido específico pelo ID.</p>
@@ -223,5 +308,69 @@
             <p>Documentação da API &copy; 2024</p>
         </div>
     </footer>
+
+    <script>
+        document.querySelectorAll('.endpoint').forEach(endpoint => {
+            endpoint.addEventListener('click', () => {
+                const url = endpoint.dataset.endpoint;
+                const method = endpoint.dataset.method;
+
+                let formSection = endpoint.querySelector('.test-section');
+                if (!formSection) {
+                    formSection = document.createElement('div');
+                    formSection.classList.add('test-section');
+
+                    formSection.innerHTML = `
+                        <div class="container">
+                            <form class="test-form">
+                                <label for="endpoint-url">URL do Endpoint:</label>
+                                <input type="text" class="endpoint-url" readonly>
+                                <label for="request-method">Método:</label>
+                                <input type="text" class="request-method" readonly>
+                                <label for="request-body">Corpo da Requisição (JSON):</label>
+                                <textarea class="request-body" rows="5"></textarea>
+                                <button type="submit">Enviar</button>
+                            </form>
+                            <h3>Resposta:</h3>
+                            <pre class="response-output"></pre>
+                        </div>
+                    `;
+                    endpoint.appendChild(formSection);
+                }
+
+                formSection.style.display = 'block';
+                formSection.querySelector('.endpoint-url').value = url;
+                formSection.querySelector('.request-method').value = method;
+                formSection.querySelector('.request-body').value = method === 'GET' || method === 'DELETE' ? '' : '{}';
+
+                formSection.querySelector('.test-form').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    const url = formSection.querySelector('.endpoint-url').value;
+                    const method = formSection.querySelector('.request-method').value;
+                    const body = formSection.querySelector('.request-body').value;
+
+                    let options = {
+                        method: method,
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    };
+
+                    if (method !== 'GET' && method !== 'DELETE') {
+                        options.body = body;
+                    }
+
+                    try {
+                        const response = await fetch(url, options);
+                        const data = await response.json();
+                        formSection.querySelector('.response-output').textContent = JSON.stringify(data, null, 2);
+                    } catch (error) {
+                        formSection.querySelector('.response-output').textContent = `Erro: ${error.message}`;
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

@@ -1,11 +1,13 @@
 import express from "express";
 const app = express();
 const router = express.Router();
+const secureRoutes  = express.Router();
 import mongoose  from "mongoose";
 import dotenv from "dotenv"
 
 dotenv.config();
 app.use(express.static('public'))
+const basePath = '/notification';
 
 mongoose.connect(process.env.MONGO_URL)
 .then(()=>{
@@ -17,8 +19,14 @@ mongoose.connect(process.env.MONGO_URL)
 })
 
 
+
+// Aplique o basePath às rotas seguras
+
+app.use(basePath, secureRoutes);
+
+
 // Rota para servir o arquivo HTML
-app.get('/', function(req, res) {
+secureRoutes.get('/', function(req, res) {
     // Não é necessário renderizar nada, apenas enviar o arquivo HTML como resposta
     res.sendFile(__dirname +  '/public/index.html');
 });
