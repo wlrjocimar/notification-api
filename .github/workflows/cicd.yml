@@ -1,0 +1,66 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Install SSH key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      
+    - name: Ignore SSH host key checking
+      run: |
+        mkdir -p ~/.ssh
+        touch ~/.ssh/config
+        echo "StrictHostKeyChecking no" >> ~/.ssh/config
+      
+    - name: Commit and deploy code
+      run: |
+        ssh root@inovaestudios.com.br << 'EOF'
+          cd /dados/webapps/ecommerce
+
+          # Configurar Git para rebase automático
+          git config pull.rebase true
+          
+          # Remover estado de rebase existente, se houver
+          if [ -d ".git/rebase-merge" ]; then
+            rm -rf .git/rebase-merge
+          fi
+          
+          # Verificar se há mudanças locais, exceto o .env
+          if [[ -n $(git status -s . | grep -v ".env") ]]; then
+            # Adicionar todas as mudanças, exceto o .env
+            git add -u
+            
+            # Fazer commit das mudanças
+            git commit -m "Commit automático das mudanças locais antes do deploy"
+            
+            # Tentar fazer o rebase
+            if ! git pull origin master --rebase; then
+              # Em caso de conflito, resolver automaticamente escolhendo as mudanças do repositório remoto
+              git reset --hard HEAD
+              git pull origin master
+            fi
+            
+            # Empurrar as mudanças para o repositório remoto
+            git push origin master
+          fi
+          
+          # Se o arquivo .env existir no servidor, restaurá-lo
+          if [ -f ".env" ]; then
+            git checkout -- .env
+          fi
+          
+          # Continuar com o deploy
+          git pull origin master && npm install && pm2 restart ec-api
+        EOF
