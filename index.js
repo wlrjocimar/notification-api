@@ -33,11 +33,10 @@ app.use(basePath, secureRoutes);
 
 
 // Rota para servir o arquivo HTML
-app.get('/', function(req, res) {
+secureRoutes.get('/', function(req, res) {
     // Não é necessário renderizar nada, apenas enviar o arquivo HTML como resposta
     res.sendFile(__dirname +  '/public/index.html');
 });
-
 
 
 
