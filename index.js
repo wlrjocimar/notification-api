@@ -17,6 +17,13 @@ mongoose.connect(process.env.MONGO_URL)
 })
 
 
+// Rota para servir o arquivo HTML
+app.get('/', function(req, res) {
+    // Não é necessário renderizar nada, apenas enviar o arquivo HTML como resposta
+    res.sendFile(__dirname +  '/public/index.html');
+});
+
+
 
 
 

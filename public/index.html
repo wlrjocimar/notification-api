@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação da API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        header {
+            background: #343a40;
+            color: #fff;
+            padding: 1em 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            text-align: center;
+            margin: 0;
+            font-size: 1.8em;
+        }
+        header nav {
+            text-align: center;
+            margin-top: 0.5em;
+        }
+        header nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        header nav ul li {
+            display: inline;
+            margin: 0 1em;
+        }
+        header nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+        header nav ul li a:hover {
+            color: #17a2b8;
+        }
+        section {
+            padding: 3em 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        h2 {
+            color: #343a40;
+            text-align: center;
+            margin-bottom: 1em;
+            font-size: 2em;
+        }
+        .endpoint {
+            background: #fff;
+            padding: 1.5em;
+            margin: 1.5em 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .endpoint:hover {
+            transform: scale(1.02);
+        }
+        .method {
+            font-weight: bold;
+            color: #fff;
+            display: inline-block;
+            padding: 0.5em 1em;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .method.get {
+            background: #28a745;
+        }
+        .method.post {
+            background: #007bff;
+        }
+        .method.put {
+            background: #ffc107;
+        }
+        .method.delete {
+            background: #dc3545;
+        }
+        .endpoint strong {
+            font-size: 1.2em;
+        }
+        .endpoint p {
+            margin: 0.5em 0 0 2.5em;
+            font-size: 1.1em;
+        }
+        footer {
+            background: #343a40;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+            margin-top: 3em;
+        }
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Documentação da API</h1>
+            <nav>
+                <ul>
+                    <li><a href="#usuarios">Usuários</a></li>
+                    <li><a href="#produtos">Produtos</a></li>
+                    <li><a href="#pedidos">Pedidos</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="usuarios">
+        <div class="container">
+            <h2>Endpoints de Usuários</h2>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>/api/usuarios</strong>
+                <p>Retorna a lista de todos os usuários.</p>
+            </div>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>/api/usuarios/{id}</strong>
+                <p>Retorna os dados de um usuário específico pelo ID.</p>
+            </div>
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <strong>/api/usuarios</strong>
+                <p>Cadastra um novo usuário.</p>
+            </div>
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>/api/usuarios/{id}</strong>
+                <p>Atualiza os dados de um usuário específico pelo ID.</p>
+            </div>
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <strong>/api/usuarios/{id}</strong>
+                <p>Deleta um usuário específico pelo ID.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="produtos">
+        <div class="container">
+            <h2>Endpoints de Produtos</h2>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>/api/produtos</strong>
+                <p>Retorna a lista de todos os produtos.</p>
+            </div>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>/api/produtos/{id}</strong>
+                <p>Retorna os dados de um produto específico pelo ID.</p>
+            </div>
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <strong>/api/produtos</strong>
+                <p>Cadastra um novo produto.</p>
+            </div>
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>/api/produtos/{id}</strong>
+                <p>Atualiza os dados de um produto específico pelo ID.</p>
+            </div>
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <strong>/api/produtos/{id}</strong>
+                <p>Deleta um produto específico pelo ID.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="pedidos">
+        <div class="container">
+            <h2>Endpoints de Pedidos</h2>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>/api/pedidos</strong>
+                <p>Retorna a lista de todos os pedidos.</p>
+            </div>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>/api/pedidos/{id}</strong>
+                <p>Retorna os dados de um pedido específico pelo ID.</p>
+            </div>
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <strong>/api/pedidos</strong>
+                <p>Cadastra um novo pedido.</p>
+            </div>
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>/api/pedidos/{id}</strong>
+                <p>Atualiza os dados de um pedido específico pelo ID.</p>
+            </div>
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <strong>/api/pedidos/{id}</strong>
+                <p>Deleta um pedido específico pelo ID.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>Documentação da API &copy; 2024</p>
+        </div>
+    </footer>
+</body>
+</html>
