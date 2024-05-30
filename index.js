@@ -48,6 +48,14 @@ secureRoutes.post('/cadastrar', function(req, res) {
 });
 
 
+secureRoutes.get('/test', function(req, res) {
+
+    
+    
+    res.status(200).json({"retorno":"resposta ok"})
+});
+
+
 
 
 
