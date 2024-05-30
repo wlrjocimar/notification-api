@@ -7,7 +7,8 @@ import dotenv from "dotenv"
 
 dotenv.config();
 app.use(express.static('public'))
-const basePath = '/notification';
+secureRoutes.use(express.static('public'))
+const basePath = '/notification-api';
 
 mongoose.connect(process.env.MONGO_URL)
 .then(()=>{
