@@ -27,7 +27,7 @@ jobs:
     - name: Commit and deploy code
       run: |
         ssh root@inovaestudios.com.br << 'EOF'
-          cd /dados/webapps/ecommerce
+          cd /dados/webapps/notification-api
 
           # Configurar Git para rebase automático
           git config pull.rebase true
@@ -62,5 +62,5 @@ jobs:
           fi
           
           # Continuar com o deploy
-          git pull origin master && npm install && pm2 restart ec-api
+          #git pull origin master && npm install && pm2 restart ec-api
         EOF
