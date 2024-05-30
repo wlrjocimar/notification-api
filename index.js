@@ -40,6 +40,7 @@ app.get('/', function(req, res) {
 
 
 
+
 secureRoutes.post('/cadastrar', function(req, res) {
 
     console.log(req.body)
