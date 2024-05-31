@@ -1,9 +1,9 @@
 import express from "express";
 const app = express();
-const router = express.Router();
 const secureRoutes  = express.Router();
 import mongoose  from "mongoose";
 import dotenv from "dotenv"
+import notificationRouter from "./src/routes/notifications.js"
 
 
 
@@ -27,9 +27,6 @@ mongoose.connect(process.env.MONGO_URL)
 
 
 
-// Aplique o basePath às rotas seguras
-
-app.use(basePath, secureRoutes);
 
 
 // Rota para servir o arquivo HTML
@@ -48,12 +45,15 @@ secureRoutes.post('/cadastrar', function(req, res) {
 });
 
 
+
+app.use(basePath, secureRoutes);
 secureRoutes.get('/test', function(req, res) {
 
     
     
     res.status(200).json({"retorno":"resposta ok"})
 });
+
 
 
 
