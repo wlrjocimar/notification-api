@@ -64,6 +64,7 @@ secureRoutes.post('/cadastrar', function(req, res) {
 
 
 
+
 secureRoutes.post('/send-notification', async (req, res) => {
     const { title, body } = req.body;
   
