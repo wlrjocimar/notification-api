@@ -35,8 +35,14 @@ secureRoutes.get('/swagger', function(req, res) {
 });
 
 secureRoutes.post('/cadastrar', function(req, res) {
-    console.log(req.body);
-    res.status(200).json({ "retorno": "mensagem retorno" });
+    // Verificar se o tipo de conteúdo da solicitação é JSON
+    if (req.is('json')) {
+        console.log(req.body);
+        res.status(200).json({ "retorno": "mensagem retorno" });
+    } else {
+        // Se não for JSON, enviar uma mensagem de erro
+        res.status(400).json({ "erro": "A solicitação deve ser enviada como JSON" });
+    }
 });
 
 secureRoutes.get('/test', function(req, res) {

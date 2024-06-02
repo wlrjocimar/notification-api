@@ -3,18 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Documentação da API</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
+    <title>Cliente HTTP</title>
     <style>
       body {
-        font-family: "Roboto", sans-serif;
+        font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
         background-color: #f0f2f5;
@@ -22,126 +14,45 @@
       }
 
       header {
-        background: #343a40;
+        background-color: #005596; /* Cor azul do Banco do Brasil */
         color: #fff;
         padding: 1em 0;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      header h1 {
         text-align: center;
-        margin: 0;
-        font-size: 1.8em;
       }
 
-      header nav {
-        text-align: center;
-        margin-top: 0.5em;
-      }
-
-      header nav ul {
-        list-style: none;
-        padding: 0;
-      }
-
-      header nav ul li {
-        display: inline;
-        margin: 0 1em;
-      }
-
-      header nav ul li a {
+      footer {
+        background-color: #004481; /* Cor azul escuro do Banco do Brasil */
         color: #fff;
-        text-decoration: none;
-        font-size: 1.1em;
-        transition: color 0.3s;
-      }
-
-      header nav ul li a:hover {
-        color: #17a2b8;
-      }
-
-      section {
-        padding: 3em 0;
-        border-bottom: 1px solid #ddd;
+        padding: 1em 0;
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
       }
 
       .container {
         width: 80%;
         margin: auto;
         overflow: hidden;
+        padding: 1em;
       }
 
-      h2 {
-        color: #343a40;
-        text-align: center;
-        margin-bottom: 1em;
-        font-size: 2em;
-      }
-
-      .endpoint {
+      .request-section {
         background: #fff;
-        padding: 1.5em;
+        padding: 1em;
         margin: 1.5em 0;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s;
-        cursor: pointer;
       }
 
-      .endpoint:hover {
-        transform: scale(1.02);
-      }
-
-      .method {
-        font-weight: bold;
-        color: #fff;
-        display: inline-block;
-        padding: 0.5em 1em;
-        border-radius: 4px;
-        margin-right: 10px;
-      }
-
-      .method.get {
-        background: #28a745;
-      }
-
-      .method.post {
-        background: #007bff;
-      }
-
-      .method.put {
-        background: #ffc107;
-      }
-
-      .method.delete {
-        background: #dc3545;
-      }
-
-      .endpoint strong {
-        font-size: 1.2em;
-      }
-
-      .endpoint p {
-        margin: 0.5em 0 0 2.5em;
-        font-size: 1.1em;
-      }
-
-      .test-section {
-        padding: 1em;
-        background: #f9f9f9;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        margin-top: 1em;
-      }
-
-      .test-section label {
+      label {
         display: block;
         margin-top: 0.5em;
       }
 
-      .test-section input,
-      .test-section textarea,
-      .test-section select {
+      input,
+      textarea,
+      select {
         width: 100%;
         padding: 0.5em;
         margin-top: 0.5em;
@@ -149,9 +60,9 @@
         border-radius: 4px;
       }
 
-      .test-section button {
+      button {
         display: block;
-        background: #007bff;
+        background: #005596; /* Cor azul do Banco do Brasil */
         color: #fff;
         border: none;
         padding: 0.7em 1.5em;
@@ -161,208 +72,214 @@
         transition: background 0.3s;
       }
 
-      .test-section button:hover {
-        background: #0056b3;
+      button:hover {
+        background: #004481; /* Cor azul escuro do Banco do Brasil */
       }
 
-      footer {
-        background: #343a40;
-        color: #fff;
-        text-align: center;
-        padding: 1em 0;
-        margin-top: 3em;
+      .response-output {
+        margin-top: 1em;
+        white-space: pre-wrap;
       }
 
-      footer p {
-        margin: 0;
+      .dynamic-field {
+        margin-top: 0.5em;
+        display: flex;
       }
 
-      /* CSS para ocultar o campo de requisição quando o método for GET ou DELETE */
-      .request-body.hidden {
-        display: none;
+      .dynamic-field input[type="text"],
+      .dynamic-field input[type="number"] {
+        flex: 1;
+      }
+
+      .dynamic-field button {
+        margin-left: 0.5em;
       }
     </style>
   </head>
   <body>
     <header>
-      <div class="container">
-        <h1>Documentação da API</h1>
-        <nav>
-          <ul>
-            <li><a href="#notificacoes">Notificações</a></li>
-          </ul>
-        </nav>
-      </div>
+      <h1>Cliente HTTP</h1>
+      <p>Desenvolvido por Você!</p>
     </header>
 
-    <section id="notificacoes">
-      <div class="container">
-        <h2>Notificações</h2>
+    <div class="container">
+      <div class="request-section">
+        <form id="request-form">
+          <label for="endpoint-url">URL do Endpoint:</label>
+          <input type="text" id="endpoint-url" />
+          <label for="request-method">Método:</label>
+          <select id="request-method">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+            <option value="PATCH">PATCH</option>
+            <option value="OPTIONS">OPTIONS</option>
+            <option value="HEAD">HEAD</option>
+            <option value="TRACE">TRACE</option>
+            <option value="CONNECT">CONNECT</option>
+          </select>
+          <label for="request-body">Corpo da Requisição:</label>
+          <select id="request-body-type">
+            <option value="json">JSON</option>
+            <option value="form-urlencoded">Formulário codificado</option>
+            <option value="text">Texto</option>
+          </select>
+          <div id="dynamic-fields"></div>
+          <textarea id="request-body" rows="5"></textarea>
+          <button type="submit">Enviar</button>
+        </form>
 
-        <div
-          class="endpoint"
-          data-endpoint="/notification-api/cadastrar"
-          data-method="POST"
-        >
-          <span class="method post">POST</span>
-          <strong>/notification-api/cadastrar</strong>
-          <p>Cadastrar algo qualquer</p>
-          <div class="test-section" style="display: none">
-            <div class="container">
-              <form class="test-form">
-                <label for="endpoint-url">URL do Endpoint:</label>
-                <input type="text" class="endpoint-url" />
-                <label for="request-method">Método:</label>
-                <select class="request-method">
-                  <option value="GET">GET</option>
-                  <option value="POST">POST</option>
-                  <option value="PUT">PUT</option>
-                  <option value="DELETE">DELETE</option>
-                </select>
-                <label for="request-body">Corpo da Requisição (JSON):</label>
-                <textarea class="request-body" rows="5"></textarea>
-                <button type="submit">Enviar</button>
-              </form>
-
-              <h3>Resposta:</h3>
-              <pre class="response-output"></pre>
-            </div>
-          </div>
-        </div>
+        <h2>Resposta:</h2>
+        <pre id="response-output"></pre>
       </div>
-    </section>
+    </div>
 
     <footer>
-      <div class="container">
-        <p>Documentação da API &copy; 2024</p>
-      </div>
+      <p>
+        &copy; <span id="currentYear"></span> Cliente HTTP. Todos os direitos
+        reservados.
+      </p>
     </footer>
 
     <script>
-      document.querySelectorAll(".endpoint").forEach((endpoint) => {
-        const postMethodSpan = endpoint.querySelector(".method.post");
-        postMethodSpan.addEventListener("click", function (e) {
-          const url = endpoint.dataset.endpoint;
-          const method = endpoint.dataset.method;
-          let formSection = endpoint.querySelector(".test-section");
+      // Função para atualizar a visibilidade do campo de corpo de requisição com base no método selecionado
+      function updateBodyVisibility() {
+        const method = document.getElementById("request-method").value;
+        const requestBodyType =
+          document.getElementById("request-body-type").value;
+        const requestBodyTextArea = document.getElementById("request-body");
+        const dynamicFields = document.getElementById("dynamic-fields");
 
-          if (!formSection) {
-            formSection = document.createElement("div");
-            formSection.classList.add("test-section");
+        // Oculta o campo de corpo de requisição e limpa os campos dinâmicos
+        requestBodyTextArea.style.display = "none";
+        dynamicFields.innerHTML = "";
 
-            formSection.innerHTML = `
-                <div class="container">
-                    <form class="test-form">
-                        <label for="endpoint-url">URL do Endpoint:</label>
-                        <input type="text" class="endpoint-url" />
-                        <label for="request-method">Método:</label>
-                        <select class="request-method">
-                            <option value="GET">GET</option>
-                            <option value="POST">POST</option>
-                            <option value="PUT">PUT</option>
-                            <option value="DELETE">DELETE</option>
-                        </select>
-                        <label for="request-body">Corpo da Requisição (JSON):</label>
-                        <textarea class="request-body" rows="5"></textarea>
-                        <button type="submit">Enviar</button>
-                    </form>
+        // Se o tipo de corpo for JSON, exibe o textarea
+        if (requestBodyType === "json") {
+          requestBodyTextArea.style.display = "block";
+        }
+        // Se o tipo de corpo for formulário codificado, exibe os campos dinâmicos
+        else if (requestBodyType === "form-urlencoded") {
+          dynamicFields.innerHTML = `
+      <div class="dynamic-field">
+        <input type="text" placeholder="Chave" />
+        <input type="text" placeholder="Valor" />
+        <button type="button" onclick="addField()">Adicionar</button>
+        <button type="button" onclick="removeField(this)">Remover</button>
 
-                    <h3>Resposta:</h3>
-                    <pre class="response-output"></pre>
-                </div>
-            `;
-            endpoint.appendChild(formSection);
+      </div>
+    `;
+        }
+        // Se o tipo de corpo for texto, exibe o textarea
+        else if (requestBodyType === "text") {
+          requestBodyTextArea.style.display = "block";
+        }
+      }
+
+      // Adiciona um evento de mudança ao método para atualizar a visibilidade do campo de corpo de requisição
+      document
+        .getElementById("request-method")
+        .addEventListener("change", updateBodyVisibility);
+      document
+        .getElementById("request-body-type")
+        .addEventListener("change", updateBodyVisibility);
+
+      // Define a visibilidade inicial com base no método inicial selecionado
+      updateBodyVisibility();
+
+      // Função para adicionar campos dinâmicos de entrada de dados
+      function addField() {
+        const dynamicFields = document.getElementById("dynamic-fields");
+        const fieldWrapper = document.createElement("div");
+        fieldWrapper.classList.add("dynamic-field");
+        fieldWrapper.innerHTML = `
+    <input type="text" placeholder="Chave" />
+    <input type="text" placeholder="Valor" />
+    <button type="button" onclick="removeField(this)">Remover</button>
+  `;
+        dynamicFields.appendChild(fieldWrapper);
+      }
+
+      // Função para remover o campo dinâmico
+      function removeField(element) {
+        const fieldToRemove = element.parentNode;
+        fieldToRemove.parentNode.removeChild(fieldToRemove);
+      }
+
+      document
+        .getElementById("request-form")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const url = document.getElementById("endpoint-url").value;
+          const method = document.getElementById("request-method").value;
+          const requestBodyType =
+            document.getElementById("request-body-type").value;
+
+          let options = {
+            method: method,
+            headers: {
+              "Cache-Control": "no-cache",
+            },
+          };
+
+          // Verifica se o método é GET ou DELETE
+          if (method === "GET" || method === "DELETE") {
+            // Se for GET ou DELETE, não definimos um corpo de requisição
+            delete options.body;
+          } else {
+            // Se não for GET ou DELETE, definimos o corpo de requisição conforme o tipo selecionado
+            let requestBody;
+            if (requestBodyType === "json") {
+              requestBody = document.getElementById("request-body").value;
+              options.headers["Content-Type"] = "application/json";
+              options.body = requestBody;
+            } else if (requestBodyType === "form-urlencoded") {
+              requestBody = new URLSearchParams();
+              const dynamicFields = document.querySelectorAll(
+                "#dynamic-fields .dynamic-field"
+              );
+              dynamicFields.forEach((field) => {
+                const key = field.querySelector(
+                  "input[type='text']:nth-child(1)"
+                ).value;
+                const value = field.querySelector(
+                  "input[type='text']:nth-child(2)"
+                ).value;
+                requestBody.append(key, value);
+              });
+              options.body = requestBody;
+            } else if (requestBodyType === "text") {
+              requestBody = document.getElementById("request-body").value;
+              options.body = requestBody;
+            }
           }
 
-          if (formSection.style.display === "block") {
-            formSection.style.display = "none";
-          } else {
-            formSection.style.display = "block";
-            formSection.querySelector(".endpoint-url").value = url;
-            formSection.querySelector(".request-method").value = method;
+          try {
+            const response = await fetch(url, options);
+            const contentType = response.headers.get("content-type");
+            let data;
 
-            const form = formSection.querySelector(".test-form");
-            const requestBodyField = form.querySelector(".request-body");
-
-            // Oculta o campo de corpo da requisição se o método for GET ou DELETE
-            if (method === "GET" || method === "DELETE") {
-              requestBodyField.style.display = "none";
+            if (contentType && contentType.includes("application/json")) {
+              data = await response.json();
             } else {
-              requestBodyField.style.display = "block";
+              data = await response.text();
             }
+
+            document.getElementById("response-output").textContent =
+              JSON.stringify(data, null, 2);
+          } catch (error) {
+            console.error("Erro na requisição:", error);
+            document.getElementById(
+              "response-output"
+            ).textContent = `Erro: ${error.message}`;
           }
         });
 
-        endpoint
-          .querySelector(".test-form")
-          .addEventListener("submit", async function (e) {
-            e.preventDefault();
-
-            const url = this.querySelector(".endpoint-url").value;
-            const method = this.querySelector(".request-method").value;
-            const requestBodyTextArea = this.querySelector(".request-body");
-
-            let options = {
-              method: method,
-              headers: {
-                "Content-Type": "application/json",
-                "Cache-Control": "no-cache",
-              },
-            };
-
-            const requestBodyString = requestBodyTextArea.value.trim();
-
-            if (method !== "GET" && method !== "DELETE" && requestBodyString) {
-              try {
-                const parsedBody = JSON.parse(requestBodyString);
-                options.body = JSON.stringify(parsedBody);
-              } catch (error) {
-                const formSection = this.closest(".test-section");
-                formSection.querySelector(
-                  ".response-output"
-                ).textContent = `Erro ao analisar JSON: ${error.message}`;
-                return;
-              }
-            }
-
-            try {
-              const response = await fetch(url, options);
-              const contentType = response.headers.get("content-type");
-              let data;
-
-              if (contentType && contentType.includes("application/json")) {
-                data = await response.json();
-              } else {
-                data = await response.text();
-              }
-
-              const formSection = this.closest(".test-section");
-              formSection.querySelector(".response-output").textContent =
-                JSON.stringify(data, null, 2);
-            } catch (error) {
-              console.error("Erro na requisição:", error);
-              const formSection = this.closest(".test-section");
-              formSection.querySelector(
-                ".response-output"
-              ).textContent = `Erro: ${error.message}`;
-            }
-          });
-
-        // Oculta o campo de corpo da requisição se o método for GET ou DELETE
-        endpoint
-          .querySelector(".request-method")
-          .addEventListener("change", function () {
-            const method = this.value;
-            const form = this.closest(".test-form");
-            const requestBodyField = form.querySelector(".request-body");
-
-            if (method === "GET" || method === "DELETE") {
-              requestBodyField.style.display = "none";
-            } else {
-              requestBodyField.style.display = "block";
-            }
-          });
-      });
+      // Atualiza o ano dinâmico no rodapé
+      document.getElementById("currentYear").textContent =
+        new Date().getFullYear();
     </script>
   </body>
 </html>
