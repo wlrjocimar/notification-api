@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cliente HTTP</title>
+    <title>HTTP Client</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -16,18 +16,20 @@
       header {
         background-color: #005596; /* Cor azul do Banco do Brasil */
         color: #fff;
-        padding: 1em 0;
+        padding: 0.5em 0; /* Reduzido de 1em para 0.5em */
         text-align: center;
+        font-size: 1.2em; /* Reduzido de 1.5em para 1.2em */
       }
 
       footer {
         background-color: #004481; /* Cor azul escuro do Banco do Brasil */
         color: #fff;
-        padding: 1em 0;
+        padding: 0.5em 0; /* Reduzido de 1em para 0.5em */
         text-align: center;
         position: fixed;
         bottom: 0;
         width: 100%;
+        font-size: 0.9em; /* Reduzido de 1em para 0.9em */
       }
 
       .container {
@@ -42,7 +44,7 @@
         padding: 1em;
         margin: 1.5em 0;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Reduzido de 0.1 para 0.05 */
       }
 
       label {
@@ -97,10 +99,7 @@
     </style>
   </head>
   <body>
-    <header>
-      <h1>Cliente HTTP</h1>
-      <p>Desenvolvido por Você!</p>
-    </header>
+    
 
     <div class="container">
       <div class="request-section">
