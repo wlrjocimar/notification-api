@@ -99,8 +99,6 @@
     </style>
   </head>
   <body>
-    
-
     <div class="container">
       <div class="request-section">
         <form id="request-form">
@@ -145,8 +143,7 @@
       // Função para atualizar a visibilidade do campo de corpo de requisição com base no método selecionado
       function updateBodyVisibility() {
         const method = document.getElementById("request-method").value;
-        const requestBodyType =
-          document.getElementById("request-body-type").value;
+        const requestBodyType = document.getElementById("request-body-type").value;
         const requestBodyTextArea = document.getElementById("request-body");
         const dynamicFields = document.getElementById("dynamic-fields");
 
@@ -154,35 +151,33 @@
         requestBodyTextArea.style.display = "none";
         dynamicFields.innerHTML = "";
 
-        // Se o tipo de corpo for JSON, exibe o textarea
-        if (requestBodyType === "json") {
-          requestBodyTextArea.style.display = "block";
-        }
-        // Se o tipo de corpo for formulário codificado, exibe os campos dinâmicos
-        else if (requestBodyType === "form-urlencoded") {
-          dynamicFields.innerHTML = `
-      <div class="dynamic-field">
-        <input type="text" placeholder="Chave" />
-        <input type="text" placeholder="Valor" />
-        <button type="button" onclick="addField()">Adicionar</button>
-        <button type="button" onclick="removeField(this)">Remover</button>
-
-      </div>
-    `;
-        }
-        // Se o tipo de corpo for texto, exibe o textarea
-        else if (requestBodyType === "text") {
-          requestBodyTextArea.style.display = "block";
+        // Verifica se o método é GET ou DELETE
+        if (method !== "GET" && method !== "DELETE") {
+          // Se o tipo de corpo for JSON, exibe o textarea
+          if (requestBodyType === "json") {
+            requestBodyTextArea.style.display = "block";
+          }
+          // Se o tipo de corpo for formulário codificado, exibe os campos dinâmicos
+          else if (requestBodyType === "form-urlencoded") {
+            dynamicFields.innerHTML = `
+              <div class="dynamic-field">
+                <input type="text" placeholder="Chave" />
+                <input type="text" placeholder="Valor" />
+                <button type="button" onclick="addField()">Adicionar</button>
+                <button type="button" onclick="removeField(this)">Remover</button>
+              </div>
+            `;
+          }
+          // Se o tipo de corpo for texto, exibe o textarea
+          else if (requestBodyType === "text") {
+            requestBodyTextArea.style.display = "block";
+          }
         }
       }
 
       // Adiciona um evento de mudança ao método para atualizar a visibilidade do campo de corpo de requisição
-      document
-        .getElementById("request-method")
-        .addEventListener("change", updateBodyVisibility);
-      document
-        .getElementById("request-body-type")
-        .addEventListener("change", updateBodyVisibility);
+      document.getElementById("request-method").addEventListener("change", updateBodyVisibility);
+      document.getElementById("request-body-type").addEventListener("change", updateBodyVisibility);
 
       // Define a visibilidade inicial com base no método inicial selecionado
       updateBodyVisibility();
@@ -193,10 +188,10 @@
         const fieldWrapper = document.createElement("div");
         fieldWrapper.classList.add("dynamic-field");
         fieldWrapper.innerHTML = `
-    <input type="text" placeholder="Chave" />
-    <input type="text" placeholder="Valor" />
-    <button type="button" onclick="removeField(this)">Remover</button>
-  `;
+          <input type="text" placeholder="Chave" />
+          <input type="text" placeholder="Valor" />
+          <button type="button" onclick="removeField(this)">Remover</button>
+        `;
         dynamicFields.appendChild(fieldWrapper);
       }
 
@@ -206,79 +201,66 @@
         fieldToRemove.parentNode.removeChild(fieldToRemove);
       }
 
-      document
-        .getElementById("request-form")
-        .addEventListener("submit", async function (e) {
-          e.preventDefault();
+      document.getElementById("request-form").addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-          const url = document.getElementById("endpoint-url").value;
-          const method = document.getElementById("request-method").value;
-          const requestBodyType =
-            document.getElementById("request-body-type").value;
+        const url = document.getElementById("endpoint-url").value;
+        const method = document.getElementById("request-method").value;
+        const requestBodyType = document.getElementById("request-body-type").value;
 
-          let options = {
-            method: method,
-            headers: {
-              "Cache-Control": "no-cache",
-            },
-          };
+        let options = {
+          method: method,
+          headers: {
+            "Cache-Control": "no-cache",
+          },
+        };
 
-          // Verifica se o método é GET ou DELETE
-          if (method === "GET" || method === "DELETE") {
-            // Se for GET ou DELETE, não definimos um corpo de requisição
-            delete options.body;
+        // Verifica se o método é GET ou DELETE
+        if (method === "GET" || method === "DELETE") {
+          // Se for GET ou DELETE, não definimos um corpo de requisição
+          delete options.body;
+        } else {
+          // Se não for GET ou DELETE, definimos o corpo de requisição conforme o tipo selecionado
+          let requestBody;
+          if (requestBodyType === "json") {
+            requestBody = document.getElementById("request-body").value;
+            options.headers["Content-Type"] = "application/json";
+            options.body = requestBody;
+          } else if (requestBodyType === "form-urlencoded") {
+            requestBody = new URLSearchParams();
+            const dynamicFields = document.querySelectorAll("#dynamic-fields .dynamic-field");
+            dynamicFields.forEach((field) => {
+              const key = field.querySelector("input[type='text']:nth-child(1)").value;
+              const value = field.querySelector("input[type='text']:nth-child(2)").value;
+              requestBody.append(key, value);
+            });
+            options.body = requestBody;
+          } else if (requestBodyType === "text") {
+            requestBody = document.getElementById("request-body").value;
+            options.body = requestBody;
+          }
+        }
+
+        try {
+          const response = await fetch(url, options);
+          const contentType = response.headers.get("content-type");
+          let data;
+
+          if (contentType && contentType.includes("application/json")) {
+            data = await response.json();
           } else {
-            // Se não for GET ou DELETE, definimos o corpo de requisição conforme o tipo selecionado
-            let requestBody;
-            if (requestBodyType === "json") {
-              requestBody = document.getElementById("request-body").value;
-              options.headers["Content-Type"] = "application/json";
-              options.body = requestBody;
-            } else if (requestBodyType === "form-urlencoded") {
-              requestBody = new URLSearchParams();
-              const dynamicFields = document.querySelectorAll(
-                "#dynamic-fields .dynamic-field"
-              );
-              dynamicFields.forEach((field) => {
-                const key = field.querySelector(
-                  "input[type='text']:nth-child(1)"
-                ).value;
-                const value = field.querySelector(
-                  "input[type='text']:nth-child(2)"
-                ).value;
-                requestBody.append(key, value);
-              });
-              options.body = requestBody;
-            } else if (requestBodyType === "text") {
-              requestBody = document.getElementById("request-body").value;
-              options.body = requestBody;
-            }
+            data = await response.text();
           }
 
-          try {
-            const response = await fetch(url, options);
-            const contentType = response.headers.get("content-type");
-            let data;
-
-            if (contentType && contentType.includes("application/json")) {
-              data = await response.json();
-            } else {
-              data = await response.text();
-            }
-
-            document.getElementById("response-output").textContent =
-              JSON.stringify(data, null, 2);
-          } catch (error) {
-            console.error("Erro na requisição:", error);
-            document.getElementById(
-              "response-output"
-            ).textContent = `Erro: ${error.message}`;
-          }
-        });
+          document.getElementById("response-output").textContent = JSON.stringify(data, null, 2);
+        } catch (error) {
+          console.error("Erro na requisição:", error);
+          document.getElementById("response-output").textContent = `Erro: ${error.message}`;
+        }
+      });
 
       // Atualiza o ano dinâmico no rodapé
-      document.getElementById("currentYear").textContent =
-        new Date().getFullYear();
+      document.getElementById("currentYear").textContent = new Date().getFullYear();
     </script>
   </body>
 </html>
