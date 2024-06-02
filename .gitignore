@@ -3,3 +3,5 @@
 
 # Ignorar diretório de dependências do Node.js
 node_modules/
+
+serviceAccountKey.json
