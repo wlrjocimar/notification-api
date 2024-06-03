@@ -77,7 +77,7 @@ secureRoutes.post('/send-notification', async (req, res) => {
         title,
         body,
       },
-      token:registeredDevices,
+      token:"i1DVm1LVmIMkgKWrRoLiOx",
     }];
   
     try {
@@ -92,7 +92,7 @@ secureRoutes.post('/send-notification', async (req, res) => {
   
 
 
-const registeredDevices = ["ExponentPushToken[i1DVm1LVmIMkgKWrRoLiOx]"];
+const registeredDevices = ["i1DVm1LVmIMkgKWrRoLiOx"];
 
 // Rota para registrar dispositivos
 // Rota para registrar dispositivos , vamos usar os tokens do lado do cliente gerado com expo para regitrar
