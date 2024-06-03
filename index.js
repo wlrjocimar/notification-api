@@ -64,7 +64,7 @@ secureRoutes.post('/cadastrar', function(req, res) {
 
 
 secureRoutes.post('/send-notification', async (req, res) => {
-    const { title, body } = req.body;
+    const { title, body,tokens } = req.body;
   
     if (!title || !body ) {
       return res.status(400).send('Título, corpo da notificação e tokens dos dispositivos são obrigatórios');
@@ -75,7 +75,7 @@ secureRoutes.post('/send-notification', async (req, res) => {
         title,
         body,
       },
-      tokens: registeredDevices, // Supondo que você tenha um array de tokens
+      tokens: tokens, // Supondo que você tenha um array de tokens
     };
       
   
@@ -91,7 +91,7 @@ secureRoutes.post('/send-notification', async (req, res) => {
   
 
 
-const registeredDevices = ["ey6AO8uBScaY5zJhs8nG74:APA91bExPPGWon6zeLWJJ00M30ZaptmacpLiKwXlcjOk9HsLTix4MfyhksPeJTUIDBKgEkgu_vfbKA3G_dkw8wyJBk3zkBHHuU5C_p4mHXHufOsv9HcUXuZvLUcArFPJh6HpUhFbtnfV"];
+const registeredDevices = ["dkkKgRZuQpm8iHywbl9IJj:APA91bG1CnClGUG_jL3smbpyDfVoLE8Pa_5dKBq5hkDf9bv0kjaK2A6xTaBiKo1LWOQPX0L3yvBeSfqSl_AV-IeCUhjDCorn-SS5hVHBZAFTYOe-Fk2Ujpirx-0iG6jJDhlwymQEJcKr"];
 
 // Rota para registrar dispositivos
 // Rota para registrar dispositivos , vamos usar os tokens do lado do cliente gerado com expo para regitrar
