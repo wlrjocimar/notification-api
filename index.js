@@ -5,10 +5,8 @@ const secureRoutes = express.Router();
 import path from "path";
 import { fileURLToPath } from 'url';
 import notificationRouter from "./src/routes/notifications.js";
-import  { Sender }  from 'node-gcm';
-// Chave do servidor para o GCM (substitua pela sua chave)
-const serverKey = 'dhfjkshfjhjhjfhsjfhss';
-const sender = new Sender(serverKey);
+
+
 import fs from 'fs';
 
 const serviceAccount = JSON.parse(fs.readFileSync('./serviceAccountKey.json', 'utf8'));
@@ -72,16 +70,17 @@ secureRoutes.post('/send-notification', async (req, res) => {
       return res.status(400).send('Título, corpo da notificação e tokens dos dispositivos são obrigatórios');
     }
   
-    const messages = [{
+    const message = {
       notification: {
         title,
         body,
       },
-      token:"i1DVm1LVmIMkgKWrRoLiOx",
-    }];
+      tokens: registeredDevices, // Supondo que você tenha um array de tokens
+    };
+      
   
     try {
-      const response = await admin.messaging().sendEach(messages);
+      const response = await admin.messaging().sendEachForMulticast(message);
       console.log('Notificações enviadas com sucesso:', response);
       res.status(200).json(response);
     } catch (error) {
@@ -92,7 +91,7 @@ secureRoutes.post('/send-notification', async (req, res) => {
   
 
 
-const registeredDevices = ["i1DVm1LVmIMkgKWrRoLiOx"];
+const registeredDevices = ["ey6AO8uBScaY5zJhs8nG74:APA91bExPPGWon6zeLWJJ00M30ZaptmacpLiKwXlcjOk9HsLTix4MfyhksPeJTUIDBKgEkgu_vfbKA3G_dkw8wyJBk3zkBHHuU5C_p4mHXHufOsv9HcUXuZvLUcArFPJh6HpUhFbtnfV"];
 
 // Rota para registrar dispositivos
 // Rota para registrar dispositivos , vamos usar os tokens do lado do cliente gerado com expo para regitrar
