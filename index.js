@@ -64,7 +64,10 @@ secureRoutes.post('/cadastrar', function(req, res) {
 
 
 secureRoutes.post('/send-notification', async (req, res) => {
-    const { title, body,tokens } = req.body;
+    console.log("Chegamos")
+    const { title, body } = req.body;
+
+    console.log("Body",req.body)
   
     if (!title || !body ) {
       return res.status(400).send('Título, corpo da notificação e tokens dos dispositivos são obrigatórios');
@@ -75,7 +78,7 @@ secureRoutes.post('/send-notification', async (req, res) => {
         title,
         body,
       },
-      tokens: tokens, // Supondo que você tenha um array de tokens
+      tokens: ["dCJHCnTTT92BbGmHPTJvgW:APA91bFFQM8vNia8TbQsiySQ0Ud0xbc962t_CCE-oNrOM5vI6cTMq_CBlomjU9incX94nfoqFnHt5s4CPR8dmNbPSAMspFxDtQT_lCTyBzyKgN3ltocTPZL0jmx6SHXDzPdVhsiUPQB3"]
     };
       
   
