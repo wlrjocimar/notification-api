@@ -5,7 +5,7 @@ const secureRoutes = express.Router();
 import path from "path";
 import { fileURLToPath } from 'url';
 import notificationRouter from "./src/routes/notifications.js";
-import Token from './models/Token.js'
+import Token from "./src/models/Token.js"
 
 import fs from 'fs';
 
