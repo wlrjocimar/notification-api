@@ -100,6 +100,7 @@ secureRoutes.post('/send-notification', async (req, res) => {
 
 secureRoutes.post('/register-device',async (req, res) => {
   const { userId, fcmToken } = req.body;
+  console.log("Chegamos!!")
 
   if (!fcmToken) {
     return res.status(400).send('Token FCM não informado');
