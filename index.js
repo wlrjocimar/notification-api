@@ -105,7 +105,7 @@ secureRoutes.post('/register-device', (req, res) => {
       console.log(`Dispositivo registrado: ${expoPushToken}`);
       res.status(200).send('Dispositivo registrado com sucesso');
     } else {
-      res.status(400).send('Expo Push Token não fornecido');
+      res.status(400).send('Token FCM nao informado');
     }
   });
   
