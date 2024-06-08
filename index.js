@@ -5,7 +5,7 @@ const secureRoutes = express.Router();
 import path from "path";
 import { fileURLToPath } from 'url';
 import notificationRouter from "./src/routes/notifications.js";
-
+import Token from './models/Token.js'
 
 import fs from 'fs';
 
@@ -94,19 +94,42 @@ secureRoutes.post('/send-notification', async (req, res) => {
   
 
 
-const registeredDevices = ["dkkKgRZuQpm8iHywbl9IJj:APA91bG1CnClGUG_jL3smbpyDfVoLE8Pa_5dKBq5hkDf9bv0kjaK2A6xTaBiKo1LWOQPX0L3yvBeSfqSl_AV-IeCUhjDCorn-SS5hVHBZAFTYOe-Fk2Ujpirx-0iG6jJDhlwymQEJcKr"];
+
 
 // Rota para registrar dispositivos
-// Rota para registrar dispositivos , vamos usar os tokens do lado do cliente gerado com expo para regitrar
-secureRoutes.post('/register-device', (req, res) => {
-    const { expoPushToken } = req.body;
-    if (expoPushToken) {
-      // Armazena o expoPushToken em seu banco de dados ou em algum outro tipo de armazenamento
-      console.log(`Dispositivo registrado: ${expoPushToken}`);
-      res.status(200).send('Dispositivo registrado com sucesso');
+
+secureRoutes.post('/register-device',async (req, res) => {
+  const { userId, fcmToken } = req.body;
+
+  if (!fcmToken) {
+    return res.status(400).send('Token FCM não informado');
+  }
+
+  if (!userId) {
+    return res.status(400).send('User ID não informado');
+  }
+
+  try {
+    // Verifica se o token já está registrado
+    const existingToken = await Token.findOne({ userId });
+
+    if (existingToken) {
+      // Atualiza o token existente
+      existingToken.fcmToken = fcmToken;
+      await existingToken.save();
+      console.log(`Dispositivo atualizado: ${fcmToken}`);
+      return res.status(200).send('Token atualizado com sucesso');
     } else {
-      res.status(400).send('Token FCM nao informado');
+      // Cria um novo token
+      const newToken = new Token({ userId, fcmToken });
+      await newToken.save();
+      console.log(`Dispositivo registrado: ${fcmToken}`);
+      return res.status(200).send('Dispositivo registrado com sucesso');
     }
+  } catch (error) {
+    console.error('Erro ao registrar o dispositivo:', error);
+    return res.status(500).send('Erro ao registrar o dispositivo');
+  }
   });
   
 
