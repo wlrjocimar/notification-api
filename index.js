@@ -65,9 +65,9 @@ secureRoutes.post('/cadastrar', function(req, res) {
 
 secureRoutes.post('/send-notification', async (req, res) => {
     console.log("Chegamos")
-    const { title, body } = req.body;
+    const { title, body,tokens } = req.body;
 
-    console.log("Body",req.body)
+    
   
     if (!title || !body ) {
       return res.status(400).send('Título, corpo da notificação e tokens dos dispositivos são obrigatórios');
@@ -78,7 +78,7 @@ secureRoutes.post('/send-notification', async (req, res) => {
         title,
         body,
       },
-      tokens: ["ds9Oi270TLePQo7xuL0UFF:APA91bFu6bWz4SMTfaoxuQOy3XtamuRvpZejay7Q9kjDKDRVZNz--8uC0SrH343YjSbSnGc1WLacvJmu03tK_duJtcoZWV72kRKAWn6wxtf25V6vsac8hmITT5mMU2Y0bIwbWPexfCyE"]
+      tokens: tokens
     };
       
   
