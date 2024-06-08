@@ -78,7 +78,7 @@ secureRoutes.post('/send-notification', async (req, res) => {
         title,
         body,
       },
-      tokens: ["dCJHCnTTT92BbGmHPTJvgW:APA91bFFQM8vNia8TbQsiySQ0Ud0xbc962t_CCE-oNrOM5vI6cTMq_CBlomjU9incX94nfoqFnHt5s4CPR8dmNbPSAMspFxDtQT_lCTyBzyKgN3ltocTPZL0jmx6SHXDzPdVhsiUPQB3"]
+      tokens: ["ds9Oi270TLePQo7xuL0UFF:APA91bFu6bWz4SMTfaoxuQOy3XtamuRvpZejay7Q9kjDKDRVZNz--8uC0SrH343YjSbSnGc1WLacvJmu03tK_duJtcoZWV72kRKAWn6wxtf25V6vsac8hmITT5mMU2Y0bIwbWPexfCyE"]
     };
       
   
