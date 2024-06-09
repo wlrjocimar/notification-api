@@ -64,32 +64,50 @@ secureRoutes.post('/cadastrar', function(req, res) {
 
 
 secureRoutes.post('/send-notification', async (req, res) => {
-    console.log("Chegamos")
-    const { title, body,tokens } = req.body;
+  console.log("Chegamos");
+  const { title, body, tokens } = req.body;
 
-    
-  
-    if (!title || !body ) {
-      return res.status(400).send('Título, corpo da notificação e tokens dos dispositivos são obrigatórios');
-    }
-  
-    const message = {
-      notification: {
-        title,
-        body,
+  if (!title || !body || !tokens || !Array.isArray(tokens)) {
+    return res.status(400).send('Título, corpo da notificação e tokens dos dispositivos são obrigatórios');
+  }
+
+  const message = {
+    notification: {
+      title,
+      body,
+    },
+    tokens: tokens,
+    android: {
+      priority: 'high', // Prioridade alta
+      ttl: 2419200, // 4 semanas em segundos
+    },
+    apns: {
+      payload: {
+        aps: {
+          contentAvailable: true,
+          mutableContent: true,
+        },
       },
-      tokens: tokens
-    };
-      
-  
-    try {
-      const response = await admin.messaging().sendEachForMulticast(message);
-      console.log('Notificações enviadas com sucesso:', response);
-      res.status(200).json(response);
-    } catch (error) {
-      console.error('Erro ao enviar notificações:', error);
-      res.status(500).send('Erro ao enviar notificações');
-    }
+      headers: {
+        'apns-priority': '10', // Prioridade alta
+        'apns-expiration': `${Math.floor(Date.now() / 1000) + 2419200}`, // 4 semanas a partir de agora
+      },
+    },
+    webpush: {
+      headers: {
+        TTL: '2419200', // 4 semanas em segundos
+      },
+    },
+  };
+
+  try {
+    const response = await admin.messaging().sendMulticast(message);
+    console.log('Notificações enviadas com sucesso:', response);
+    res.status(200).json(response);
+  } catch (error) {
+    console.error('Erro ao enviar notificações:', error);
+    res.status(500).send('Erro ao enviar notificações');
+  }
   });
   
 
