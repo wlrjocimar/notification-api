@@ -5,7 +5,7 @@ on:
     branches:
       - master
 
-      
+
 
 jobs:
   deploy:
@@ -64,5 +64,5 @@ jobs:
           fi
           
           # Continuar com o deploy
-          git pull origin master && npm install && pm2 restart notification-api
+          git pull origin master && npm install
         EOF
