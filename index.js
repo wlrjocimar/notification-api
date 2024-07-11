@@ -1,5 +1,5 @@
 import express from "express";
-import mongoose from "mongoose";
+//import mongoose from "mongoose";
 import dotenv from "dotenv";
 const secureRoutes = express.Router();
 import path from "path";
@@ -33,16 +33,16 @@ app.use(express.json());
 
 app.use(express.static('public'));
 
-mongoose.connect(process.env.MONGO_URL)
-    .then(() => {
-        console.log("DBConnection successful!!");
-    })
-    .then(() => {
-        console.log("If connection successful then I run");
-    })
-    .catch((error) => {
-        console.log("Authentication Failed!!", error);
-    });
+// mongoose.connect(process.env.MONGO_URL)
+//     .then(() => {
+//         console.log("DBConnection successful!!");
+//     })
+//     .then(() => {
+//         console.log("If connection successful then I run");
+//     })
+//     .catch((error) => {
+//         console.log("Authentication Failed!!", error);
+//     });
 
 // Route to serve the HTML file
 secureRoutes.get('/swagger', function(req, res) {
