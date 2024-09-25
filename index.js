@@ -99,6 +99,7 @@ secureRoutes.post('/send-notification', async (req, res) => {
       },
     },
   };
+  
 
   try {
     const response = await admin.messaging().sendEachForMulticast(message);
