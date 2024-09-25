@@ -5,12 +5,10 @@ on:
     branches:
       - master
 
-
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -60,9 +58,11 @@ jobs:
           
           # Se o arquivo .env existir no servidor, restaurá-lo
           if [ -f ".env" ]; then
-            git checkout -- .env
+            git checkout -- .env || true
           fi
           
-          # Continuar com o deploy
-          git pull origin master && npm install
+          # Adicionar o caminho do npm ao PATH e continuar com o deploy
+          export PATH=/usr/local/nodejs/bin:$PATH
+          
+          git pull && npm install && pm2 restart notification-api
         EOF
