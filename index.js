@@ -78,8 +78,8 @@ secureRoutes.post('/send-notification', async (req, res) => {
     },
     tokens: tokens,
     android: {
-      priority: 'high', // Prioridade alta
-      ttl: 2419200, // 4 semanas em segundos
+      priority: 'high',
+      ttl: 2419200,
     },
     apns: {
       payload: {
@@ -89,27 +89,41 @@ secureRoutes.post('/send-notification', async (req, res) => {
         },
       },
       headers: {
-        'apns-priority': '10', // Prioridade alta
-        'apns-expiration': `${Math.floor(Date.now() / 1000) + 2419200}`, // 4 semanas a partir de agora
+        'apns-priority': '10',
+        'apns-expiration': `${Math.floor(Date.now() / 1000) + 2419200}`,
       },
     },
     webpush: {
       headers: {
-        TTL: '2419200', // 4 semanas em segundos
+        TTL: '2419200',
       },
     },
   };
 
   try {
-    const response = await admin.messaging().sendMulticast(message);
+    const response = await admin.messaging().sendEachForMulticast(message);
     console.log('Notificações enviadas com sucesso:', response);
+
+    // Verifica se houve falhas no envio
+    if (response.failureCount > 0) {
+      const errors = response.responses
+        .filter(r => !r.success)
+        .map((r, index) => ({
+          token: tokens[index],
+          error: r.error.message || 'Erro desconhecido',
+        }));
+
+      console.error('Falhas no envio das notificações:', errors);
+      return res.status(500).json({ message: 'Algumas notificações não foram enviadas.', errors });
+    }
+
     res.status(200).json(response);
   } catch (error) {
     console.error('Erro ao enviar notificações:', error);
-    res.status(500).send('Erro ao enviar notificações');
+    res.status(500).send(`Erro ao enviar notificações: ${error.message}`);
   }
-  });
-  
+});
+
 
 
 
