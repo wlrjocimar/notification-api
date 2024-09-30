@@ -1,266 +1,276 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HTTP Client</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f0f2f5;
-        color: #333;
-      }
 
-      header {
-        background-color: #005596; /* Cor azul do Banco do Brasil */
-        color: #fff;
-        padding: 0.5em 0; /* Reduzido de 1em para 0.5em */
-        text-align: center;
-        font-size: 1.2em; /* Reduzido de 1.5em para 1.2em */
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTTP Client</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f2f5;
+      color: #333;
+    }
 
-      footer {
-        background-color: #004481; /* Cor azul escuro do Banco do Brasil */
-        color: #fff;
-        padding: 0.5em 0; /* Reduzido de 1em para 0.5em */
-        text-align: center;
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        font-size: 0.9em; /* Reduzido de 1em para 0.9em */
-      }
+    header {
+      background-color: #005596;
+      /* Cor azul do Banco do Brasil */
+      color: #fff;
+      padding: 0.5em 0;
+      text-align: center;
+      font-size: 1.2em;
+    }
 
-      .container {
-        width: 80%;
-        margin: auto;
-        overflow: hidden;
-        padding: 1em;
-      }
+    footer {
+      background-color: #004481;
+      /* Cor azul escuro do Banco do Brasil */
+      color: #fff;
+      padding: 0.5em 0;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      font-size: 0.9em;
+    }
 
-      .request-section {
-        background: #fff;
-        padding: 1em;
-        margin: 1.5em 0;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Reduzido de 0.1 para 0.05 */
-      }
+    .container {
+      width: 80%;
+      margin: auto;
+      overflow: hidden;
+      padding: 1em;
+    }
 
-      label {
-        display: block;
-        margin-top: 0.5em;
-      }
+    .request-section {
+      background: #fff;
+      padding: 1em;
+      margin: 1.5em 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
 
-      input,
-      textarea,
-      select {
-        width: 100%;
-        padding: 0.5em;
-        margin-top: 0.5em;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
+    label {
+      display: block;
+      margin-top: 0.5em;
+    }
 
-      button {
-        display: block;
-        background: #005596; /* Cor azul do Banco do Brasil */
-        color: #fff;
-        border: none;
-        padding: 0.7em 1.5em;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 1em;
-        transition: background 0.3s;
-      }
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.5em;
+      margin-top: 0.5em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
 
-      button:hover {
-        background: #004481; /* Cor azul escuro do Banco do Brasil */
-      }
+    button {
+      display: block;
+      background: #005596;
+      /* Cor azul do Banco do Brasil */
+      color: #fff;
+      border: none;
+      padding: 0.7em 1.5em;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 1em;
+      transition: background 0.3s;
+    }
 
-      .response-output {
-        margin-top: 1em;
-        white-space: pre-wrap;
-      }
+    button:hover {
+      background: #004481;
+      /* Cor azul escuro do Banco do Brasil */
+    }
 
-      .dynamic-field {
-        margin-top: 0.5em;
-        display: flex;
-      }
+    .response-output {
+      margin-top: 1em;
+      white-space: pre-wrap;
+    }
 
-      .dynamic-field input[type="text"],
-      .dynamic-field input[type="number"] {
-        flex: 1;
-      }
+    .dynamic-field {
+      margin-top: 0.5em;
+      display: flex;
+    }
 
-      .dynamic-field button {
-        margin-left: 0.5em;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="request-section">
-        <form id="request-form">
-          <label for="endpoint-url">URL do Endpoint:</label>
-          <input type="text" id="endpoint-url" />
-          <label for="request-method">Método:</label>
-          <select id="request-method">
-            <option value="GET">GET</option>
-            <option value="POST">POST</option>
-            <option value="PUT">PUT</option>
-            <option value="DELETE">DELETE</option>
-            <option value="PATCH">PATCH</option>
-            <option value="OPTIONS">OPTIONS</option>
-            <option value="HEAD">HEAD</option>
-            <option value="TRACE">TRACE</option>
-            <option value="CONNECT">CONNECT</option>
-          </select>
-          <label for="request-body">Corpo da Requisição:</label>
-          <select id="request-body-type">
-            <option value="json">JSON</option>
-            <option value="form-urlencoded">Formulário codificado</option>
-            <option value="text">Texto</option>
-          </select>
-          <div id="dynamic-fields"></div>
-          <textarea id="request-body" rows="5"></textarea>
-          <button type="submit">Enviar</button>
-        </form>
+    .dynamic-field input[type="text"],
+    .dynamic-field input[type="number"] {
+      flex: 1;
+    }
 
-        <h2>Resposta:</h2>
-        <pre id="response-output"></pre>
-      </div>
+    .dynamic-field button {
+      margin-left: 0.5em;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="request-section">
+      <form id="request-form">
+        <label for="endpoint-url">URL do Endpoint:</label>
+        <input type="text" id="endpoint-url" />
+        <label for="request-method">Método:</label>
+        <select id="request-method">
+          <option value="GET">GET</option>
+          <option value="POST">POST</option>
+          <option value="PUT">PUT</option>
+          <option value="DELETE">DELETE</option>
+          <option value="PATCH">PATCH</option>
+          <option value="OPTIONS">OPTIONS</option>
+          <option value="HEAD">HEAD</option>
+          <option value="TRACE">TRACE</option>
+          <option value="CONNECT">CONNECT</option>
+        </select>
+        <label for="request-body">Corpo da Requisição:</label>
+        <select id="request-body-type">
+          <option value="json">JSON</option>
+          <option value="form-urlencoded">Formulário codificado</option>
+          <option value="text">Texto</option>
+        </select>
+        <div id="dynamic-fields"></div>
+        <textarea id="request-body" rows="5"></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+
+      <h2>Resposta:</h2>
+      <pre id="response-output"></pre>
     </div>
+  </div>
 
-    <footer>
-      <p>
-        &copy; <span id="currentYear"></span> Cliente HTTP. Todos os direitos
-        reservados.
-      </p>
-    </footer>
+  <footer>
+    <p>
+      &copy; <span id="currentYear"></span> Cliente HTTP. Todos os direitos
+      reservados.
+    </p>
+  </footer>
 
-    <script>
-      // Função para atualizar a visibilidade do campo de corpo de requisição com base no método selecionado
-      function updateBodyVisibility() {
-        const method = document.getElementById("request-method").value;
-        const requestBodyType = document.getElementById("request-body-type").value;
-        const requestBodyTextArea = document.getElementById("request-body");
-        const dynamicFields = document.getElementById("dynamic-fields");
+  <script>
+    function updateBodyVisibility() {
+      const method = document.getElementById("request-method").value;
+      const requestBodyType = document.getElementById("request-body-type").value;
+      const requestBodyTextArea = document.getElementById("request-body");
+      const dynamicFields = document.getElementById("dynamic-fields");
 
-        // Oculta o campo de corpo de requisição e limpa os campos dinâmicos
-        requestBodyTextArea.style.display = "none";
-        dynamicFields.innerHTML = "";
+      requestBodyTextArea.style.display = "none";
+      dynamicFields.innerHTML = "";
 
-        // Verifica se o método é GET ou DELETE
-        if (method !== "GET" && method !== "DELETE") {
-          // Se o tipo de corpo for JSON, exibe o textarea
-          if (requestBodyType === "json") {
-            requestBodyTextArea.style.display = "block";
-          }
-          // Se o tipo de corpo for formulário codificado, exibe os campos dinâmicos
-          else if (requestBodyType === "form-urlencoded") {
-            dynamicFields.innerHTML = `
-              <div class="dynamic-field">
+      if (method !== "GET" && method !== "DELETE") {
+        if (requestBodyType === "json") {
+          requestBodyTextArea.style.display = "block";
+        } else if (requestBodyType === "form-urlencoded") {
+          dynamicFields.innerHTML = `
+                        <div class="dynamic-field">
+                            <input type="text" placeholder="Chave" />
+                            <input type="text" placeholder="Valor" />
+                            <button type="button" onclick="addField()">Adicionar</button>
+                            <button type="button" onclick="removeField(this)">Remover</button>
+                        </div>
+                    `;
+        } else if (requestBodyType === "text") {
+          requestBodyTextArea.style.display = "block";
+        }
+      }
+    }
+
+    document.getElementById("request-method").addEventListener("change", updateBodyVisibility);
+    document.getElementById("request-body-type").addEventListener("change", updateBodyVisibility);
+    updateBodyVisibility();
+
+    function addField() {
+      const dynamicFields = document.getElementById("dynamic-fields");
+      const fieldWrapper = document.createElement("div");
+      fieldWrapper.classList.add("dynamic-field");
+      fieldWrapper.innerHTML = `
                 <input type="text" placeholder="Chave" />
                 <input type="text" placeholder="Valor" />
-                <button type="button" onclick="addField()">Adicionar</button>
                 <button type="button" onclick="removeField(this)">Remover</button>
-              </div>
             `;
-          }
-          // Se o tipo de corpo for texto, exibe o textarea
-          else if (requestBodyType === "text") {
-            requestBodyTextArea.style.display = "block";
-          }
+      dynamicFields.appendChild(fieldWrapper);
+    }
+
+    function removeField(element) {
+      const fieldToRemove = element.parentNode;
+      fieldToRemove.parentNode.removeChild(fieldToRemove);
+    }
+
+    const setCookie = (name, value, days) => {
+      let expires = "";
+      if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    document.getElementById("request-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const url = document.getElementById("endpoint-url").value;
+      const method = document.getElementById("request-method").value;
+      const requestBodyType = document.getElementById("request-body-type").value;
+
+      let options = {
+        method: method,
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      };
+
+      if (method === "GET" || method === "DELETE") {
+        delete options.body;
+      } else {
+        let requestBody;
+        if (requestBodyType === "json") {
+          requestBody = document.getElementById("request-body").value;
+          options.headers["Content-Type"] = "application/json";
+          options.body = requestBody;
+        } else if (requestBodyType === "form-urlencoded") {
+          requestBody = new URLSearchParams();
+          const dynamicFields = document.querySelectorAll("#dynamic-fields .dynamic-field");
+          dynamicFields.forEach((field) => {
+            const key = field.querySelector("input[type='text']:nth-child(1)").value;
+            const value = field.querySelector("input[type='text']:nth-child(2)").value;
+            requestBody.append(key, value);
+          });
+          options.body = requestBody;
+        } else if (requestBodyType === "text") {
+          requestBody = document.getElementById("request-body").value;
+          options.body = requestBody;
         }
       }
 
-      // Adiciona um evento de mudança ao método para atualizar a visibilidade do campo de corpo de requisição
-      document.getElementById("request-method").addEventListener("change", updateBodyVisibility);
-      document.getElementById("request-body-type").addEventListener("change", updateBodyVisibility);
+      try {
+        const response = await fetch(url, options);
+        const contentType = response.headers.get("content-type");
+        let data;
 
-      // Define a visibilidade inicial com base no método inicial selecionado
-      updateBodyVisibility();
-
-      // Função para adicionar campos dinâmicos de entrada de dados
-      function addField() {
-        const dynamicFields = document.getElementById("dynamic-fields");
-        const fieldWrapper = document.createElement("div");
-        fieldWrapper.classList.add("dynamic-field");
-        fieldWrapper.innerHTML = `
-          <input type="text" placeholder="Chave" />
-          <input type="text" placeholder="Valor" />
-          <button type="button" onclick="removeField(this)">Remover</button>
-        `;
-        dynamicFields.appendChild(fieldWrapper);
-      }
-
-      // Função para remover o campo dinâmico
-      function removeField(element) {
-        const fieldToRemove = element.parentNode;
-        fieldToRemove.parentNode.removeChild(fieldToRemove);
-      }
-
-      document.getElementById("request-form").addEventListener("submit", async function (e) {
-        e.preventDefault();
-
-        const url = document.getElementById("endpoint-url").value;
-        const method = document.getElementById("request-method").value;
-        const requestBodyType = document.getElementById("request-body-type").value;
-
-        let options = {
-          method: method,
-          headers: {
-            "Cache-Control": "no-cache",
-          },
-        };
-
-        // Verifica se o método é GET ou DELETE
-        if (method === "GET" || method === "DELETE") {
-          // Se for GET ou DELETE, não definimos um corpo de requisição
-          delete options.body;
+        if (contentType && contentType.includes("application/json")) {
+          data = await response.json();
         } else {
-          // Se não for GET ou DELETE, definimos o corpo de requisição conforme o tipo selecionado
-          let requestBody;
-          if (requestBodyType === "json") {
-            requestBody = document.getElementById("request-body").value;
-            options.headers["Content-Type"] = "application/json";
-            options.body = requestBody;
-          } else if (requestBodyType === "form-urlencoded") {
-            requestBody = new URLSearchParams();
-            const dynamicFields = document.querySelectorAll("#dynamic-fields .dynamic-field");
-            dynamicFields.forEach((field) => {
-              const key = field.querySelector("input[type='text']:nth-child(1)").value;
-              const value = field.querySelector("input[type='text']:nth-child(2)").value;
-              requestBody.append(key, value);
-            });
-            options.body = requestBody;
-          } else if (requestBodyType === "text") {
-            requestBody = document.getElementById("request-body").value;
-            options.body = requestBody;
-          }
+          data = await response.text();
         }
 
-        try {
-          const response = await fetch(url, options);
-          const contentType = response.headers.get("content-type");
-          let data;
-
-          if (contentType && contentType.includes("application/json")) {
-            data = await response.json();
-          } else {
-            data = await response.text();
-          }
-
-          document.getElementById("response-output").textContent = JSON.stringify(data, null, 2);
-        } catch (error) {
-          console.error("Erro na requisição:", error);
-          document.getElementById("response-output").textContent = `Erro: ${error.message}`;
+        // Obtendo o cookie do header
+        const cookieHeader = response.headers.get('set-cookie');
+        console.log("cookies no header", response.headers)
+        if (cookieHeader) {
+          const [cookieName, cookieValue] = cookieHeader.split(';')[0].split('=');
+          setCookie(cookieName, cookieValue, data.expirationDays || 7); // Utilize dias de expiração se disponíveis
         }
-      });
 
-      // Atualiza o ano dinâmico no rodapé
-      document.getElementById("currentYear").textContent = new Date().getFullYear();
-    </script>
-  </body>
+
+
+        document.getElementById("response-output").textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        console.error("Erro na requisição:", error);
+        document.getElementById("response-output").textContent = `Erro: ${error.message}`;
+      }
+    });
+
+    document.getElementById("currentYear").textContent = new Date().getFullYear();
+  </script>
+</body>
+
 </html>
