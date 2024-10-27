@@ -16,7 +16,6 @@
 
     header {
       background-color: #005596;
-      /* Cor azul do Banco do Brasil */
       color: #fff;
       padding: 0.5em 0;
       text-align: center;
@@ -25,7 +24,6 @@
 
     footer {
       background-color: #004481;
-      /* Cor azul escuro do Banco do Brasil */
       color: #fff;
       padding: 0.5em 0;
       text-align: center;
@@ -68,7 +66,6 @@
     button {
       display: block;
       background: #005596;
-      /* Cor azul do Banco do Brasil */
       color: #fff;
       border: none;
       padding: 0.7em 1.5em;
@@ -80,7 +77,6 @@
 
     button:hover {
       background: #004481;
-      /* Cor azul escuro do Banco do Brasil */
     }
 
     .response-output {
@@ -109,7 +105,8 @@
     <div class="request-section">
       <form id="request-form">
         <label for="endpoint-url">URL do Endpoint:</label>
-        <input type="text" id="endpoint-url" />
+        <input type="text" id="endpoint-url" required />
+        
         <label for="request-method">Método:</label>
         <select id="request-method">
           <option value="GET">GET</option>
@@ -117,19 +114,22 @@
           <option value="PUT">PUT</option>
           <option value="DELETE">DELETE</option>
           <option value="PATCH">PATCH</option>
-          <option value="OPTIONS">OPTIONS</option>
-          <option value="HEAD">HEAD</option>
-          <option value="TRACE">TRACE</option>
-          <option value="CONNECT">CONNECT</option>
         </select>
+
         <label for="request-body">Corpo da Requisição:</label>
         <select id="request-body-type">
           <option value="json">JSON</option>
           <option value="form-urlencoded">Formulário codificado</option>
           <option value="text">Texto</option>
         </select>
+
         <div id="dynamic-fields"></div>
         <textarea id="request-body" rows="5"></textarea>
+
+        <h3>Cabeçalhos:</h3>
+        <div id="header-fields"></div>
+        <button type="button" onclick="addHeader()">Adicionar Cabeçalho</button>
+
         <button type="submit">Enviar</button>
       </form>
 
@@ -139,11 +139,9 @@
   </div>
 
   <footer>
-    <p>
-      &copy; <span id="currentYear"></span> Cliente HTTP. Todos os direitos
-      reservados.
-    </p>
+    <p>&copy; <span id="currentYear"></span> Cliente HTTP. Todos os direitos reservados.</p>
   </footer>
+  
 
   <script>
     function updateBodyVisibility() {
@@ -160,13 +158,13 @@
           requestBodyTextArea.style.display = "block";
         } else if (requestBodyType === "form-urlencoded") {
           dynamicFields.innerHTML = `
-                        <div class="dynamic-field">
-                            <input type="text" placeholder="Chave" />
-                            <input type="text" placeholder="Valor" />
-                            <button type="button" onclick="addField()">Adicionar</button>
-                            <button type="button" onclick="removeField(this)">Remover</button>
-                        </div>
-                    `;
+            <div class="dynamic-field">
+              <input type="text" placeholder="Chave" />
+              <input type="text" placeholder="Valor" />
+              <button type="button" onclick="addField()">Adicionar</button>
+              <button type="button" onclick="removeField(this)">Remover</button>
+            </div>
+          `;
         } else if (requestBodyType === "text") {
           requestBodyTextArea.style.display = "block";
         }
@@ -182,10 +180,10 @@
       const fieldWrapper = document.createElement("div");
       fieldWrapper.classList.add("dynamic-field");
       fieldWrapper.innerHTML = `
-                <input type="text" placeholder="Chave" />
-                <input type="text" placeholder="Valor" />
-                <button type="button" onclick="removeField(this)">Remover</button>
-            `;
+        <input type="text" placeholder="Chave" />
+        <input type="text" placeholder="Valor" />
+        <button type="button" onclick="removeField(this)">Remover</button>
+      `;
       dynamicFields.appendChild(fieldWrapper);
     }
 
@@ -194,14 +192,16 @@
       fieldToRemove.parentNode.removeChild(fieldToRemove);
     }
 
-    const setCookie = (name, value, days) => {
-      let expires = "";
-      if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-      }
-      document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    function addHeader() {
+      const headerFields = document.getElementById("header-fields");
+      const headerWrapper = document.createElement("div");
+      headerWrapper.classList.add("dynamic-field");
+      headerWrapper.innerHTML = `
+        <input type="text" placeholder="Nome do Cabeçalho" />
+        <input type="text" placeholder="Valor" />
+        <button type="button" onclick="removeField(this)">Remover</button>
+      `;
+      headerFields.appendChild(headerWrapper);
     }
 
     document.getElementById("request-form").addEventListener("submit", async function (e) {
@@ -211,57 +211,51 @@
       const method = document.getElementById("request-method").value;
       const requestBodyType = document.getElementById("request-body-type").value;
 
-      let options = {
-        method: method,
-        headers: {
-          "Cache-Control": "no-cache",
-        },
-      };
+      let body = null;
+      const headers = {};
 
-      if (method === "GET" || method === "DELETE") {
-        delete options.body;
-      } else {
-        let requestBody;
+      if (method !== "GET" && method !== "DELETE") {
         if (requestBodyType === "json") {
-          requestBody = document.getElementById("request-body").value;
-          options.headers["Content-Type"] = "application/json";
-          options.body = requestBody;
+          body = document.getElementById("request-body").value;
         } else if (requestBodyType === "form-urlencoded") {
-          requestBody = new URLSearchParams();
           const dynamicFields = document.querySelectorAll("#dynamic-fields .dynamic-field");
+          const formBody = {};
           dynamicFields.forEach((field) => {
             const key = field.querySelector("input[type='text']:nth-child(1)").value;
             const value = field.querySelector("input[type='text']:nth-child(2)").value;
-            requestBody.append(key, value);
+            formBody[key] = value;
           });
-          options.body = requestBody;
+          body = formBody;
         } else if (requestBodyType === "text") {
-          requestBody = document.getElementById("request-body").value;
-          options.body = requestBody;
+          body = document.getElementById("request-body").value;
         }
       }
 
+      const headerFields = document.querySelectorAll("#header-fields .dynamic-field");
+      headerFields.forEach((field) => {
+        const headerName = field.querySelector("input[type='text']:nth-child(1)").value;
+        const headerValue = field.querySelector("input[type='text']:nth-child(2)").value;
+        if (headerName && headerValue) {
+          headers[headerName] = headerValue;
+        }
+      });
+
       try {
-        const response = await fetch(url, options);
-        const contentType = response.headers.get("content-type");
-        let data;
+        const response = await fetch('/notification-api/make-request', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...headers,
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            url: url,
+            method: method,
+            body: body
+          }),
+        });
 
-        if (contentType && contentType.includes("application/json")) {
-          data = await response.json();
-        } else {
-          data = await response.text();
-        }
-
-        // Obtendo o cookie do header
-        const cookieHeader = response.headers.get('set-cookie');
-        console.log("cookies no header", response.headers)
-        if (cookieHeader) {
-          const [cookieName, cookieValue] = cookieHeader.split(';')[0].split('=');
-          setCookie(cookieName, cookieValue, data.expirationDays || 7); // Utilize dias de expiração se disponíveis
-        }
-
-
-
+        const data = await response.json();
         document.getElementById("response-output").textContent = JSON.stringify(data, null, 2);
       } catch (error) {
         console.error("Erro na requisição:", error);

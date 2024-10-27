@@ -6,12 +6,19 @@ import path from "path";
 import { fileURLToPath } from 'url';
 import notificationRouter from "./src/routes/notifications.js";
 import Token from "./src/models/Token.js"
-
+import  cors  from "cors";
+const app = express();
 import fs from 'fs';
 
 const serviceAccount = JSON.parse(fs.readFileSync('./serviceAccountKey.json', 'utf8'));
 
 import admin from 'firebase-admin'; // Certifique-se de ter o pacote 'firebase-admin' instalado
+
+
+
+
+
+app.use(cors("*"));
 
 
 
@@ -22,7 +29,7 @@ admin.initializeApp({
 
 
 dotenv.config();
-const app = express();
+
 
 // To resolve __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -48,6 +55,9 @@ app.use(express.static('public'));
 secureRoutes.get('/swagger', function(req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+
+secureRoutes.use("/",notificationRouter);
 
 secureRoutes.post('/cadastrar', function(req, res) {
     // Verificar se o tipo de conteúdo da solicitação é JSON
