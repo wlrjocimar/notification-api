@@ -16,6 +16,8 @@ router.post("/make-request", async (req, res) => {
             headers: {
                 "Content-Type": "application/json",
                 "Cache-Control": "no-cache",
+                // Repassando todos os cabeçalhos que foram enviados na requisição original
+                ...req.headers,
             },
             withCredentials: true, // Inclui cookies e autenticação
             httpsAgent: new https.Agent({
