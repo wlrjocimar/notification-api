@@ -8,6 +8,8 @@ import notificationRouter from "./src/routes/notifications.js";
 import Token from "./src/models/Token.js"
 import  cors  from "cors";
 const app = express();
+
+import cookieParser from "cookie-parser";
 import fs from 'fs';
 
 const serviceAccount = JSON.parse(fs.readFileSync('./serviceAccountKey.json', 'utf8'));
@@ -19,6 +21,7 @@ import admin from 'firebase-admin'; // Certifique-se de ter o pacote 'firebase-a
 
 
 app.use(cors("*"));
+app.use(cookieParser()); 
 
 
 

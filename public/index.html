@@ -141,7 +141,7 @@
   <footer>
     <p>&copy; <span id="currentYear"></span> Cliente HTTP. Todos os direitos reservados.</p>
   </footer>
-  
+
 
   <script>
     function updateBodyVisibility() {
@@ -251,14 +251,15 @@
           body: JSON.stringify({
             url: url,
             method: method,
-            body: body
+            body: body,
+            
           }),
         });
 
         const data = await response.json();
         document.getElementById("response-output").textContent = JSON.stringify(data, null, 2);
       } catch (error) {
-        console.error("Erro na requisição:", error);
+       
         document.getElementById("response-output").textContent = `Erro: ${error.message}`;
       }
     });
